@@ -40,12 +40,12 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<Book> getAllBooks() throws RemoteException {
+    public synchronized List<Book> getAllBooks() throws RemoteException {
         return books;
     }
 
     @Override
-    public Book getBook(String bookTitle) throws RemoteException {
+    public synchronized Book getBook(String bookTitle) throws RemoteException {
         for (Book book : books) {
             if (Objects.equals(book.getTitle(), bookTitle)) {
                 return book;
@@ -55,7 +55,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public Book borrowBook(int bookId) throws RemoteException {
+    public synchronized Book borrowBook(int bookId) throws RemoteException {
         // 根据ID查找图书并借阅
         for (Book book : books) {
             if (book.getId() == bookId && !book.isBorrowed()) {
@@ -68,7 +68,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public Book returnBook(int bookId) throws RemoteException {
+    public synchronized Book returnBook(int bookId) throws RemoteException {
         // 标记图书为未借出状态
         for (Book book : books) {
             if (book.getId() == bookId && book.isBorrowed()) {
